@@ -1,0 +1,54 @@
+ShePolicy Outline Navigator — Round 1A Proposal
+
+Problem Statement
+Women at large enterprises wade through 150‑page HR PDFs (maternity, harassment, equal‑pay policies). Manual ctrl‑F misses clause changes; legal jargon hides actionable rights; HR desks answer slowly.
+
+🔴 Existing Pain
+
+Hours lost scanning dense policy handbooks
+No tooling to diff yearly handbook versions
+Generic PDF outliners ignore women‑centric sections
+Disclosure risk: employees must open tickets just to ask about leave
+✅ Solution Overview: Offline Policy Intel for Women Employees
+ShePolicy Outline Navigator parses the PDF, tags headings into eight women‑focused buckets, builds a maternity‑leave timeline, and highlights clause deltas — all offline in < 5 seconds.
+
+🔥 Core Features
+Feature	1‑line Value
+Category‑Aware Tagger	Auto‑labels headings: Maternity, Anti‑Harassment, Equal Pay…
+Timeline Builder	Extracts “26 weeks” → renders leave → join‑back → WFH phases
+Cross‑Version Diff	Drag two PDFs → see added / removed / modified clauses
+Bucket Filter UI	Click Maternity chip → sidebar collapses to relevant 14 headings
+Export JSON / PDF	One‑click shareable summary for manager / HR
+💡 How It Works (Step‑by‑Step)
+1️⃣ Front‑end drops PDF(s) into browser
+2️⃣ pdf.js streams font‑metrics → heading list
+3️⃣ Embedded DistilBERT‑tiny ONNX → assigns bucket label (offline)
+4️⃣ Regex engine parses leave durations → JSON timeline
+5️⃣ Optional second PDF runs diff → LCS flags clause changes
+6️⃣ UI renders outline tree, chips, timeline card; export button writes JSON
+
+🚀 Additional Goodies
+✔️ Private‑Mode — no file upload, data never leaves laptop
+✔️ Version History — keep cache of outlines, compare any two years
+✔️ Mentor Directory — scans org‑chart PDFs, links Women‑in‑Tech ERG contacts
+✔️ Reimbursement Wizard — autofill child‑care claim form from clause text
+
+🛠 Tech Stack
+Layer	Choice	Why
+Front‑End	Pure HTML + CSS + JS	Zero build tools, runs from file://
+PDF Parsing	pdf.js 3.11	Proven in‑browser extractor
+ML Model	DistilBERT‑tiny (12 MB ONNX)	Fits CPU limit, 35 ms per heading
+Cache	localStorage (outline)	Instant reload, no DB
+Optional Back‑End	FastAPI helper (offline)	Faster on huge PDFs; exposes /outline, /diff, /thumbnail
+Deployment: copy index.html + models/ to any laptop, or bundle as Tauri/Electron app (< 120 MB).
+
+🌍 Why This Will Win
+🔥 First reader that classifies HR PDFs specifically for women’s rights
+🔥 Turns static policy into actionable timelines & clause diffs
+🔥 Offline privacy meets strict enterprise compliance
+🔥 HR workload drops; employees feel empowered → higher retention
+
+💎 Judge‑Pleasing Extras
+✅ Auto‑generate calendar .ics from timeline
+✅ Heat‑map ruler showing density of maternity vs harassment clauses
+✅ Slack App: /shepolicy leave replies with personal timeline snippet

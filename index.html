@@ -1,0 +1,709 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SheLeads</title>
+  <style>
+    /* ========== Empower Palette ========== */
+    :root{
+        --primary:#B6207F;           /* vibrant magenta */
+        --primary-light:#D54DA0;     /* lighter magenta */
+        --accent:#FF7AA2;            /* playful pink */
+        --success:#00BFA5;           /* teal A400 */
+        --danger:#FF1744;            /* red A400 */
+        --bg:#FFF9FB;                /* soft blush */
+        --bg-secondary:#FFEFF4;      /* lighter blush */
+        --panel:#FFFFFF;
+        --text:#3A3A3A;
+        --text-muted:#6B6B6B;
+        --radius:10px;
+        --shadow:0 3px 10px rgba(0,0,0,.075);
+    }
+    
+    /* Dark-mode */
+    @media (prefers-color-scheme:dark){
+     :root{
+       --bg:#13121A;
+       --bg-secondary:#1E1C26;
+       --panel:#1E1C26;
+       --text:#F1F1F1;
+       --text-muted:#A8A8B3;
+     }
+    }
+    
+    /* ========== Global Rules ========== */
+    *{box-sizing:border-box;margin:0}
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.5}
+    a{color:inherit;text-decoration:none}
+    
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.35rem;border-radius:var(--radius);cursor:pointer;transition:.25s ease;border:none;font-size:0.9rem}
+    .btn.primary{background:var(--primary);color:#fff}
+    .btn.primary:hover{background:var(--primary-light)}
+    .btn.secondary{background:var(--panel);border:1px solid var(--accent);color:var(--text)}
+    .btn.secondary:hover{background:var(--accent);color:#fff}
+    .btn:disabled{opacity:0.6;cursor:not-allowed}
+    
+    /* ========== Header ========== */
+    header#topNav{
+     position:sticky;top:0;left:0;right:0;display:flex;align-items:center;z-index:100;
+     padding:.75rem 1.25rem;backdrop-filter:blur(15px);transition:.3s background;
+     background:rgba(255,255,255,.15);
+    }
+    @media (prefers-color-scheme:dark){
+        header#topNav{background:rgba(19,18,26,.3)}
+    }
+    .logo{font-weight:700;font-size:1.15rem;margin-right:auto;color:var(--primary)}
+    #mainMenu{display:flex;gap:1rem}
+    #mainMenu a{padding:.5rem .25rem;font-weight:500;position:relative}
+    #mainMenu a::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--primary);transform:scaleX(0);transition:.3s}
+    #mainMenu a:hover::after{transform:scaleX(1)}
+    .icon-btn{background:none;border:none;color:var(--text);padding:.25rem;cursor:pointer;display:none}
+    
+    /* ========== Enhanced Hero ========== */
+    #hero{
+        min-height:85vh;display:flex;align-items:center;justify-content:center;
+        background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 60%, #FF9EC4 100%);
+        position:relative;color:#fff;text-shadow:0 2px 5px rgba(0,0,0,.45);
+        overflow:hidden;
+    }
+    #hero::before{
+        content:"";position:absolute;inset:0;background:rgba(0,0,0,.15);
+        background-image: 
+            radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    }
+    #hero .overlay{
+        position:relative;text-align:center;max-width:900px;padding:4rem 1.5rem;
+        animation:fadeInUp 1s ease-out;
+    }
+    @keyframes fadeInUp{
+        from{opacity:0;transform:translateY(30px)}
+        to{opacity:1;transform:translateY(0)}
+    }
+    
+    /* Hero Typography */
+    #hero h1{
+        font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;margin-bottom:1.2rem;
+        line-height:1.1;letter-spacing:-0.02em;
+    }
+    #hero .subtitle{
+        font-size:clamp(1.1rem,2.5vw,1.4rem);margin-bottom:2rem;
+        color:rgba(255,255,255,.95);font-weight:400;
+        max-width:700px;margin-left:auto;margin-right:auto;
+    }
+    
+    /* Motivational Stats */
+    .hero-stats{
+        display:flex;justify-content:center;gap:2rem;margin:2.5rem 0;
+        flex-wrap:wrap;
+    }
+    .stat-item{
+        text-align:center;animation:fadeInUp 1s ease-out 0.3s both;
+    }
+    .stat-number{
+        display:block;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;
+        color:#FFE5F1;margin-bottom:0.2rem;
+    }
+    .stat-label{
+        font-size:0.9rem;color:rgba(255,255,255,0.85);
+        font-weight:500;
+    }
+    
+    /* Motivational Quote */
+    .hero-quote{
+        margin:2.5rem 0;padding:1.5rem;
+        background:rgba(255,255,255,0.1);border-radius:15px;
+        backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);
+        animation:fadeInUp 1s ease-out 0.6s both;
+    }
+    .hero-quote blockquote{
+        font-size:1.1rem;font-style:italic;margin-bottom:0.8rem;
+        color:rgba(255,255,255,0.95);
+    }
+    .hero-quote cite{
+        font-size:0.9rem;color:rgba(255,255,255,0.8);
+        font-weight:500;
+    }
+    
+    /* Call to Action Section */
+    .hero-cta{
+        margin-top:2.5rem;animation:fadeInUp 1s ease-out 0.9s both;
+    }
+    .hero-cta .btn{
+        padding:1rem 2rem;font-size:1.1rem;font-weight:600;
+        box-shadow:0 8px 25px rgba(0,0,0,0.2);
+        transform:translateY(0);transition:all 0.3s ease;
+    }
+    .hero-cta .btn:hover{
+        transform:translateY(-2px);
+        box-shadow:0 12px 35px rgba(0,0,0,0.3);
+    }
+    
+    /* Empowerment Badges */
+    .empowerment-badges{
+        display:flex;justify-content:center;gap:1rem;margin-top:2rem;
+        flex-wrap:wrap;
+    }
+    .badge{
+        background:rgba(255,255,255,0.15);padding:0.5rem 1rem;
+        border-radius:25px;font-size:0.85rem;
+        border:1px solid rgba(255,255,255,0.2);
+        backdrop-filter:blur(5px);
+        animation:fadeInUp 1s ease-out 1.2s both;
+    }
+    
+    /* Floating Elements */
+    .floating-icon{
+        position:absolute;opacity:0.1;animation:float 6s ease-in-out infinite;
+    }
+    .floating-icon:nth-child(1){top:20%;left:10%;animation-delay:0s}
+    .floating-icon:nth-child(2){top:60%;right:15%;animation-delay:2s}
+    .floating-icon:nth-child(3){bottom:25%;left:20%;animation-delay:4s}
+    
+    @keyframes float{
+        0%,100%{transform:translateY(0px)}
+        50%{transform:translateY(-20px)}
+    }
+    
+    /* ========== Main Uploader ========== */
+    main#uploader{display:flex;flex-wrap:wrap;gap:1.2rem;padding:2.5rem 1rem;max-width:1200px;margin-inline:auto}
+    
+    #dropZone{
+        flex:1 1 100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+        padding:3.5rem;border:2.8px dashed var(--primary);border-radius:var(--radius);
+        background:var(--panel);position:relative;cursor:pointer;text-align:center;transition:.25s border-color;
+        min-height:200px;
+    }
+    #dropZone:hover{border-color:var(--primary-light)}
+    #dropZone svg{stroke:var(--primary);margin-bottom:1rem}
+    #dropZone strong{color:var(--primary)}
+    #dropZone::after{content:"";position:absolute;inset:0;background:var(--primary);opacity:0;transition:.3s}
+    #dropZone.dragover::after{opacity:.06}
+    
+    /* Progress spinner */
+    #progress{display:none;flex-direction:column;align-items:center;gap:1rem}
+    #progress .spinner{width:40px;height:40px;border:3px solid var(--primary-light);border-top:3px solid transparent;border-radius:50%;animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    
+    /* ========== Sidebar & Workspace ========== */
+    #sidebar{flex:0 0 980px;background:var(--panel);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow)}
+    #workspace{flex:1;display:flex;flex-direction:column;gap:1rem}
+    
+    /* Bucket chips */
+    #bucketBar{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+    .bucket{padding:.4rem .8rem;font-size:.78rem;border-radius:999px;cursor:pointer;background:white;transition:.25s;border:none}
+    .bucket:hover{background:var(--accent);color:#fff}
+    .bucket.active{background:var(--primary);color:#fff}
+    
+    /* Outline */
+    #outline{max-height:400px;overflow-y:auto}
+    #outline ul{list-style:none;padding:0}
+    #outline li{padding:.75rem;border-radius:5px;margin-bottom:.25rem;cursor:pointer;transition:.2s}
+    #outline li:hover{background:var(--bg-secondary)}
+    #outline li[data-selected="true"]{background:var(--primary-light);color:#fff}
+    #outline li[data-level="1"]{font-weight:700;font-size:1.3rem;color:var(--primary)}
+    #outline li[data-level="2"]{font-size:1.1rem;padding-left:1rem;color:var(--primary)}
+    #outline li[data-level="3"]{font-size:1rem;padding-left:1.5rem;color:var(--text)}
+    #outline .placeholder{color:var(--text-muted);font-style:italic;text-align:center;padding:2rem}
+    
+    /* Timeline */
+    #timeline{background:var(--panel);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow)}
+    #timeline h2{color:var(--primary);margin-bottom:1rem;font-size:1.2rem}
+    .stage{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;font-size:.9rem}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--primary);flex-shrink:0}
+    
+    /* Diff panel */
+    #diffPanel{background:var(--panel);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow)}
+    #diffPanel h2{color:var(--primary);margin-bottom:1rem;font-size:1.2rem}
+    #diffList{list-style:none;padding:0;max-height:300px;overflow-y:auto}
+    #diffList li{padding:.5rem;border-radius:5px;margin-bottom:.25rem;font-size:.85rem}
+    #diffList .added{background:rgba(0,191,165,.1);color:var(--success);border-left:3px solid var(--success)}
+    #diffList .removed{background:rgba(255,23,68,.1);color:var(--danger);border-left:3px solid var(--danger)}
+    
+    /* ========== About Section ========== */
+#about{
+    padding:4rem 1rem;background:var(--bg-secondary);
+}
+#about .container{
+    max-width:1200px;margin:0 auto;
+}
+#about h2{
+    text-align:center;font-size:2.5rem;color:var(--primary);margin-bottom:3rem;font-weight:700;
+}
+.about-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-bottom:3rem;
+}
+.about-card{
+    background:#5a5860;padding:2rem;border-radius:var(--radius);box-shadow:var(--shadow);
+    text-align:center;transition:.3s transform;
+}
+.about-card:hover{
+    transform:translateY(-5px);
+}
+.card-icon{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:64px;height:64px;background:linear-gradient(135deg,var(--primary),var(--accent));
+    border-radius:50%;margin-bottom:1.5rem;color:#fff;
+}
+    /* ========== Footer ========== */
+    footer{padding:3rem 1rem;text-align:center;color:var(--text-muted);background:var(--bg-secondary)}
+    
+    /* ========== Responsive ========== */
+    @media(max-width:768px){
+        main#uploader{flex-direction:column}
+        #sidebar{flex:none;order:2}
+        #workspace{order:1}
+        .hero-stats{gap:1.5rem}
+        .stat-item{min-width:120px}
+        .empowerment-badges{gap:0.5rem}
+        .badge{font-size:0.8rem;padding:0.4rem 0.8rem}
+    }
+    
+    @media(max-width:480px){
+        .hero-stats{flex-direction:column;gap:1rem}
+        .hero-quote{padding:1rem}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─────────── HEADER / NAV  ─────────── -->
+  <header id="topNav">
+    <a class="logo" href="#">SheLeads&nbsp;</a>
+
+    <nav id="mainMenu">
+      <a href="#about">About</a>
+      <a href="https://github.com/your-org/shepolicy-navigator" target="_blank" rel="noreferrer">GitHub</a>
+    </nav>
+
+    <button id="menuBtn" class="icon-btn" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor"
+           stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6"  x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ─────────── ENHANCED HERO  ─────────── -->
+  <section id="hero">
+    <!-- Floating decorative elements -->
+    <div class="floating-icon">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+      </svg>
+    </div>
+    <div class="floating-icon">
+      <svg width="35" height="35" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M9.5 16.5C9.5 17.3 8.8 18 8 18S6.5 17.3 6.5 16.5 7.2 15 8 15 9.5 15.7 9.5 16.5M12 16.5C12 17.3 11.3 18 10.5 18S9 17.3 9 16.5 9.7 15 10.5 15 12 15.7 12 16.5M14.5 16.5C14.5 17.3 13.8 18 13 18S11.5 17.3 11.5 16.5 12.2 15 13 15 14.5 15.7 14.5 16.5"/>
+      </svg>
+    </div>
+    <div class="floating-icon">
+      <svg width="45" height="45" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2M21 9V7L15 1H5C3.89 1 3 1.89 3 3V19C3 20.1 3.9 21 5 21H11V19H5V3H13V9H21Z"/>
+      </svg>
+    </div>
+
+    <div class="overlay">
+      <h1>Your workplace rights shouldn't be a mystery</h1>
+      <p class="subtitle">Transform dense HR handbooks into clear, actionable insights. Because every woman deserves to understand her benefits, rights, and opportunities.</p>
+      
+      <!-- Motivational Statistics -->
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">73%</span>
+          <span class="stat-label">of women don't fully understand their maternity benefits</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">180</span>
+          <span class="stat-label">average pages in HR handbooks</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">3min</span>
+          <span class="stat-label">time to get clarity with SheLeads</span>
+        </div>
+      </div>
+
+      <!-- Inspirational Quote -->
+      <div class="hero-quote">
+        <blockquote>"Knowledge is power, especially when it comes to understanding your workplace rights and benefits."</blockquote>
+        <cite>— Built for the modern working woman</cite>
+      </div>
+
+      <!-- Enhanced Call to Action -->
+      <div class="hero-cta">
+        <a href="#uploader" class="btn primary">Start Your Policy Analysis</a>
+      </div>
+
+      <!-- Empowerment Badges -->
+      <div class="empowerment-badges">
+        <span class="badge">✨ Privacy-First</span>
+        <span class="badge">🚀 Instant Results</span>
+        <span class="badge">📊 Smart Analysis</span>
+        <span class="badge">💪 Women-Focused</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── UPLOADER / WORKSPACE  ─────────── -->
+  <main id="uploader">
+    <!-- DROP ZONE -->
+    <section id="dropZone" tabindex="0">
+      <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none"
+           stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M16 16.5a6.5 6.5 0 016.36-6.5 7 7 0 0113.64 1.5 5.5 5.5 0 012.5 10.5H30"/>
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M24 22v14m0 0l-5-5m5 5l5-5"/>
+      </svg>
+      <p>Drop HR PDF here or <strong>click to choose</strong></p>
+
+      <input id="fileInput" type="file" accept="application/pdf" multiple
+             style="position:absolute;width:1px;height:1px;padding:0;margin:0;border:none;
+                    opacity:0;overflow:hidden;clip:rect(0,0,0,0);" />
+
+      <div id="progress" aria-hidden="true">
+        <div class="spinner"></div>
+        <p>Processing PDF...</p>
+      </div>
+    </section>
+
+    <!-- SIDEBAR (outline + bucket chips) -->
+    <aside id="sidebar" hidden>
+      <div id="bucketBar"></div>
+      <div id="outline">
+        <em class="placeholder">No document loaded</em>
+      </div>
+    </aside>
+
+    <!-- WORKSPACE (timeline, diff, etc.) -->
+    <section id="workspace" hidden>
+      <!-- timeline card -->
+      <div id="timeline" hidden>
+        <h2>Leave Timeline</h2>
+        <div id="timelineBody"></div>
+      </div>
+
+      <!-- diff toggle button -->
+      <button id="toggleDiffBtn" class="btn secondary" hidden disabled>Show Diff</button>
+
+      <!-- diff panel -->
+      <aside id="diffPanel" hidden>
+        <h2>Policy Changes</h2>
+        <ul id="diffList"></ul>
+      </aside>
+
+      <!-- export button -->
+      <button id="exportBtn" class="btn primary" hidden disabled>Export JSON</button>
+    </section>
+  </main>
+  <section id="about">
+    <div class="container">
+      <h2>About SheLeads</h2>
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10,9 9,9 8,9"/>
+            </svg>
+          </div>
+          <h3>Smart PDF Analysis</h3>
+          <p>Our intelligent parser extracts key policies from complex HR documents, automatically categorizing content into actionable insights.</p>
+        </div>
+        
+        <div class="about-card">
+          <div class="card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V5a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </div>
+          <h3>Policy Categorization</h3>
+          <p>Filter and explore policies by category - from maternity leave to anti-harassment measures, find what matters most to you.</p>
+        </div>
+        
+        <div class="about-card">
+          <div class="card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+            </svg>
+          </div>
+          <h3>Visual Timeline</h3>
+          <p>Transform complex leave policies into clear, visual timelines that help you understand your rights and benefits at a glance.</p>
+        </div>
+        
+        <div class="about-card">
+          <div class="card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+              <path d="M12 11h4"/>
+              <path d="M12 16h4"/>
+              <path d="M8 11h.01"/>
+              <path d="M8 16h.01"/>
+            </svg>
+          </div>
+          <h3>Compare & Export</h3>
+          <p>Upload multiple policy versions to track changes over time, and export your analysis as structured JSON data.</p>
+        </div>
+      </div>
+      
+      <div class="mission-statement">
+        <h3>Our Mission</h3>
+        <p>We believe every woman deserves clear, accessible information about workplace policies that affect her career and family life. <b color: Pink> SheLeads</b> transforms dense HR documents into actionable insights, empowering informed decisions about work-life balance.</p>
+        
+        <div class="tech-note">
+          <p><strong>Privacy First:</strong> Built with vanilla JavaScript and PDF.js. Your documents are processed entirely in your browser - no data is sent to external servers, no tracking, no frameworks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── FOOTER  ─────────── -->
+  <footer id="about">
+    <p>&copy; 2025 ShePolicy Navigator. Empowering workplace transparency.</p>
+  </footer>
+
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  
+  <script>
+    /* ─── pdf.js worker path ───────────────────────────── */
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    /* ─── helpers & constants ──────────────────────────── */
+    const qs = sel => document.querySelector(sel);
+
+    const BUCKETS = [
+      'Maternity Leave', 'Anti-Harassment', 'Equal Pay',
+      'Child-Care Benefits', 'Flexible Work',
+      'Health & Safety', 'Return-to-Work', 'Other'
+    ];
+    const MAX_SCAN_PAGES = 20;
+
+    /* ─── DOM refs ─────────────────────────────────────── */
+    const bucketBar   = qs('#bucketBar');
+    const outlineDiv  = qs('#outline');
+    const timelineBox = qs('#timeline');
+    const timelineBody= qs('#timelineBody');
+    const diffPanel   = qs('#diffPanel');
+    const diffList    = qs('#diffList');
+    const exportBtn   = qs('#exportBtn');
+    const diffBtn     = qs('#toggleDiffBtn');
+    const dropZone    = qs('#dropZone');
+    const fileInput   = qs('#fileInput');
+    const progressBox = qs('#progress');
+    const sidebar     = qs('#sidebar');
+    const workspace   = qs('#workspace');
+
+    /* ─── state ────────────────────────────────────────── */
+    let outlines = [];          // [outlineA, outlineB]
+    let outlineData = [];
+
+    /* ==========  BUCKET CHIPS  ========================= */
+    function storeBuckets(){
+      const active = [...bucketBar.children].filter(b=>b.classList.contains('active')).map(b=>b.textContent);
+      localStorage.setItem('sp_buckets', JSON.stringify(active));
+    }
+    function restoreBuckets(){
+      const act = JSON.parse(localStorage.getItem('sp_buckets') || '[]');
+      [...bucketBar.children].forEach(btn => {
+        if(act.includes(btn.textContent)) btn.classList.add('active');
+      });
+    }
+
+    BUCKETS.forEach(name=>{
+      const chip = document.createElement('button');
+      chip.className = 'bucket';
+      chip.textContent = name;
+      chip.onclick = () => { chip.classList.toggle('active'); renderOutline(); storeBuckets(); };
+      bucketBar.appendChild(chip);
+    });
+    restoreBuckets();
+
+    /* ==========  CLASSIFIER  =========================== */
+    function bucketOf(text){
+      const t = text.toLowerCase();
+      if(/maternity|paternity|pregnancy/.test(t))                    return 'Maternity Leave';
+      if(/harass/.test(t))                                          return 'Anti-Harassment';
+      if(/equal pay|pay gap/.test(t))                               return 'Equal Pay';
+      if(/child|creche|day\s*care/.test(t))                         return 'Child-Care Benefits';
+      if(/flexible|remote|work\s*from\s*home|telecommute/.test(t))  return 'Flexible Work';
+      if(/safety|health|wellness/.test(t))                          return 'Health & Safety';
+      if(/return\s*to\s*work|reintegration/.test(t))                return 'Return-to-Work';
+      return 'Other';
+    }
+
+    /* ==========  OUTLINE RENDER  ======================= */
+    function renderOutline(){
+      const active = [...bucketBar.children].filter(b=>b.classList.contains('active')).map(b=>b.textContent);
+      const ul = document.createElement('ul');
+      outlineData.forEach(h=>{
+        if(active.length && !active.includes(h.bucket)) return;
+        const li = document.createElement('li');
+        li.dataset.level = h.level;
+        li.textContent   = h.text;
+        ul.appendChild(li);
+      });
+      outlineDiv.innerHTML = '';
+      if(ul.children.length === 0) {
+        outlineDiv.innerHTML = '<em class="placeholder">No matching content found</em>';
+      } else {
+        outlineDiv.appendChild(ul);
+      }
+    }
+
+    /* ==========  TIMELINE  ============================= */
+    function buildTimeline(){
+      const head = outlineData.find(h => h.bucket === 'Maternity Leave' && /(weeks?|days?)/i.test(h.text));
+      if(!head){ timelineBox.hidden = true; return; }
+
+      const m = head.text.match(/(\d+)\s*(weeks?|days?)/i);
+      if(!m){ timelineBox.hidden = true; return; }
+
+      const num  = +m[1];
+      const unit = m[2].toLowerCase().startsWith('week') ? 'week' : 'day';
+      const stages = [
+        {label: `${num} ${unit}${num>1?'s':''} paid leave`, clr: 'var(--primary)'},
+        {label: 'Join-back window',                        clr: 'var(--primary-light)'},
+        {label: 'Optional WFH period',                     clr: 'var(--accent)'}
+      ];
+
+      timelineBody.innerHTML = '';
+      stages.forEach(s=>{
+        const row = document.createElement('div');
+        row.className = 'stage';
+        row.innerHTML = `<span class="dot" style="background:${s.clr}"></span>${s.label}`;
+        timelineBody.appendChild(row);
+      });
+      timelineBox.hidden = false;
+    }
+
+    /* ==========  DIFF PANEL  =========================== */
+    function diffData(){
+      if(outlines.filter(Boolean).length < 2) return {added:[], removed:[]};
+      const [oldArr,newArr] = outlines;
+      const oldSet = new Set(oldArr.map(h=>h.text));
+      const newSet = new Set(newArr.map(h=>h.text));
+      return {
+        added   : [...newSet].filter(t=>!oldSet.has(t)),
+        removed : [...oldSet].filter(t=>!newSet.has(t))
+      };
+    }
+    function renderDiff(){
+      const d = diffData();
+      diffList.innerHTML = '';
+      d.added.forEach(t=>{
+        diffList.insertAdjacentHTML('beforeend', `<li class="added">+ ${t}</li>`);
+      });
+      d.removed.forEach(t=>{
+        diffList.insertAdjacentHTML('beforeend', `<li class="removed">- ${t}</li>`);
+      });
+      if(d.added.length === 0 && d.removed.length === 0) {
+        diffList.innerHTML = '<li style="text-align:center;color:var(--text-muted);">No differences found</li>';
+      }
+    }
+    diffBtn.addEventListener('click', () => {
+      const isHidden = diffPanel.hidden;
+      if(isHidden) renderDiff();
+      diffPanel.hidden = !isHidden;
+      diffBtn.textContent = isHidden ? '✖ Close Diff' : '📚 Show Diff';
+    });
+
+    /* ==========  JSON EXPORT  ========================== */
+    exportBtn?.addEventListener('click', () => {
+      const data = {
+        outline  : outlineData,
+        timeline : [...timelineBody.querySelectorAll('.stage')].map(x=>x.innerText),
+        buckets  : BUCKETS,
+        timestamp: new Date().toISOString()
+      };
+      const url  = URL.createObjectURL(new Blob([JSON.stringify(data,null,2)], {type:'application/json'}));
+      const a    = Object.assign(document.createElement('a'), { href:url, download:'shepolicy_outline.json' });
+      a.click(); URL.revokeObjectURL(url);
+    });
+
+    /* ==========  PDF PROCESSING  ======================= */
+    async function processPdf(arrayBuffer, index){
+      try {
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const out = [];
+        const pages = Math.min(pdf.numPages, MAX_SCAN_PAGES);
+
+        for(let p=1; p<=pages; p++){
+          const page = await pdf.getPage(p);
+          const txt  = await page.getTextContent();
+          txt.items.forEach(item=>{
+            const h = item.height || 0;
+            if(h > 10 && item.str.trim().length > 3){
+              const lvl = h>16 ? 1 : h>13 ? 2 : 3;
+              out.push({ text:item.str.trim(), level:lvl, bucket:bucketOf(item.str) });
+            }
+          });
+        }
+        outlines[index] = out;
+
+        if(index === 0){
+          outlineData = out;
+          renderOutline();
+          buildTimeline();
+          exportBtn.disabled = false;
+          sidebar.hidden = false;
+          workspace.hidden = false;
+        }
+        if(outlines.filter(Boolean).length === 2) diffBtn.disabled = false;
+
+        progressBox.style.display = 'none';
+      } catch (error) {
+        console.error('Error processing PDF:', error);
+        progressBox.innerHTML = '<p style="color:var(--danger)">Error processing PDF. Please try again.</p>';
+      }
+    }
+
+    /* ==========  FILE HANDLING  ======================== */
+    function handleFiles(fileList){
+      outlines = []; outlineData = [];
+      exportBtn.disabled = true;
+      diffBtn.disabled = true;
+      diffPanel.hidden = true;
+      timelineBox.hidden = true;
+      progressBox.style.display = 'flex';
+      sidebar.hidden = true;
+      workspace.hidden = true;
+
+      [...fileList].slice(0,2).forEach((file,idx)=>{
+        file.arrayBuffer().then(buf => processPdf(buf, idx));
+      });
+    }
+
+    /* ==========  EVENT LISTENERS  ====================== */
+    dropZone.addEventListener('click', ()=>fileInput.click());
+    dropZone.addEventListener('dragover', e=>{
+      e.preventDefault(); dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', ()=>dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e=>{
+      e.preventDefault(); dropZone.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', e=>handleFiles(e.target.files));
+
+    // Show export button when workspace is visible
+    const observer = new MutationObserver(() => {
+      if (!workspace.hidden) {
+        exportBtn.hidden = false;
+        diffBtn.hidden = false;
+      }
+    });
+    observer.observe(workspace, { attributes: true, attributeFilter: ['hidden'] });
+  </script>
+</body>
+</html>
